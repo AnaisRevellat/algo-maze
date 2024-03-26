@@ -1,6 +1,3 @@
-main {
-}
-
 .maze-button {
   margin: 10px;
   border: none;
@@ -40,6 +37,7 @@ main {
   width: 50vw;
   background: rgba(6, 52, 137, 0.498);
   border-radius: 5px;
+  width:40%;
 }
 
 .row {
@@ -58,7 +56,7 @@ main {
 }
 
 .cell.visited {
-  background-color: #a200ff;
+  background-color: #0af392;
 }
 
 .cell.path {

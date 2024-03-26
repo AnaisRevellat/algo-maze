@@ -1,20 +1,15 @@
+import { useEffect, useState } from "react";
 import "./App.css";
-import { useState } from "react";
 
-export default function MazeGrid() {
-  let initialMaze = [
-    ["wall", "wall", "wall", "wall"],
-    ["start", "path", "path", "wall"],
-    ["wall", "wall", "path", "wall"],
-    ["wall", "wall", "path", "end"],
-    ["wall", "wall", "wall", "wall"],
-  ];
-
-  const [width, setWidth] = useState(initialMaze[0].length);
-  const [height, setHeight] = useState(initialMaze.length);
-  const [maze, setMaze] = useState(initialMaze);
+export default function MazeGrid({ width = 18, height = 18 }) {
+  const [maze, setMaze] = useState([]);
   const [timeoutIds, setTimeoutIds] = useState([]);
 
+  useEffect(() => {
+    generateMaze(width, height);
+  }, [height, width]);
+
+ //breadth-first search 
   function bfs(startNode) {
     let queue = [startNode];
     let visited = new Set(`${startNode[0]},${startNode[1]}`);
@@ -29,12 +24,11 @@ export default function MazeGrid() {
               return cell === "end" ? "end" : "visited";
             }
             return cell;
-          })
-        )
+          }),
+        ),
       );
-
       if (maze[y][x] === "end") {
-        console.log("path found!");
+        console.log("path existing");
         return true;
       }
       return false;
@@ -47,7 +41,6 @@ export default function MazeGrid() {
       const [x, y] = queue.shift();
       console.log("new step queue");
       const dirs = [
-        //[horizontal direction, vertical direction]
         [0, 1],
         [1, 0],
         [0, -1],
@@ -57,23 +50,21 @@ export default function MazeGrid() {
       for (const [dx, dy] of dirs) {
         const nx = x + dx;
         const ny = y + dy;
-
         if (
           nx >= 0 &&
           nx < width &&
           ny >= 0 &&
           ny < height &&
-          !visited.has(`${nx}, ${ny}`)
+          !visited.has(`${nx},${ny}`)
         ) {
-          visited.add(`${nx}, ${ny}`);
-          console.log(x, y);
+          visited.add(`${nx},${ny}`);
           if (maze[ny][nx] === "path" || maze[ny][nx] === "end") {
             if (visitCell([nx, ny])) {
               return true;
             }
-            queue.push([nx], [ny]);
+            queue.push([nx, ny]);
           }
-        }
+        } 
       }
 
       const timeoutId = setTimeout(step, 100);
@@ -82,16 +73,14 @@ export default function MazeGrid() {
 
     step();
     return false;
+   
   }
-
-  /*----------------------------------------------*/
 
   function dfs(startNode) {
     let stack = [startNode];
-    let visited = new Set(`${startNode[0]}, ${startNode[1]}`);
+    let visited = new Set(`${startNode[0]},${startNode[1]}`);
 
     function visitCell([x, y]) {
-      //console.log(x,y)
       setMaze((prevMaze) =>
         prevMaze.map((row, rowIndex) =>
           row.map((cell, cellIndex) => {
@@ -99,12 +88,12 @@ export default function MazeGrid() {
               return cell === "end" ? "end" : "visited";
             }
             return cell;
-          })
-        )
+          }),
+        ),
       );
 
       if (maze[y][x] === "end") {
-        console.log("path found!");
+        console.log("final path found");
         return true;
       }
       return false;
@@ -114,11 +103,9 @@ export default function MazeGrid() {
       if (stack.length === 0) {
         return;
       }
-
       const [x, y] = stack.pop();
       console.log("new step");
       const dirs = [
-        //[horizontal direction, vertical direction]
         [0, 1],
         [1, 0],
         [0, -1],
@@ -133,25 +120,25 @@ export default function MazeGrid() {
           nx < width &&
           ny >= 0 &&
           ny < height &&
-          !visited.has(`${nx}, ${ny}`)
+          !visited.has(`${nx},${ny}`)
         ) {
-          visited.add(`${nx}, ${ny}`);
+          visited.add(`${nx},${ny}`);
           if (maze[ny][nx] === "path" || maze[ny][nx] === "end") {
             if (visitCell([nx, ny])) {
               return true;
             }
-            stack.push([nx], [ny]);
+            stack.push([nx, ny]);
           }
-        }
+        } // '2, 3'
       }
-      step();
+      const timeoutId = setTimeout(step, 100);
+      setTimeoutIds((previousTimeoutIds) => [...previousTimeoutIds, timeoutId]);
     }
 
     step();
-    return false;
+    return false;    
   }
 
-  //first a function to define the height and width
   function generateMaze(height, width) {
     let matrix = [];
 
@@ -164,10 +151,8 @@ export default function MazeGrid() {
       matrix.push(row);
     }
     console.log(matrix);
-    //the carving function
 
     const dirs = [
-      //[x, y]
       [0, 1],
       [1, 0],
       [0, -1],
@@ -177,7 +162,7 @@ export default function MazeGrid() {
     function isCellValid(x, y) {
       return (
         y >= 0 && x >= 0 && x < width && y < height && matrix[y][x] === "wall"
-      ); //safely move
+      );
     }
 
     function carvePath(x, y) {
@@ -188,7 +173,6 @@ export default function MazeGrid() {
       for (let [dx, dy] of directions) {
         const nx = x + dx * 2;
         const ny = y + dy * 2;
-
         if (isCellValid(nx, ny)) {
           matrix[y + dy][x + dx] = "path";
           carvePath(nx, ny);
@@ -198,18 +182,15 @@ export default function MazeGrid() {
 
     carvePath(1, 1);
 
-    matrix[1][0] = "start"; //matrix[y][x]
+    matrix[1][0] = "start";
     matrix[height - 2][width - 1] = "end";
-
-    setHeight(matrix.length);
-    setWidth(matrix[0].length);
     setMaze(matrix);
   }
 
   function refreshMaze() {
     timeoutIds.forEach(clearTimeout);
     setTimeoutIds([]);
-    generateMaze(10, 10);
+    generateMaze(20, 20);
   }
 
   return (
@@ -227,9 +208,9 @@ export default function MazeGrid() {
       </div>
       <div className={"maze"}>
         {maze.map((row, rowIndex) => (
-          <div className="row" key={rowIndex}>
+          <div className="row">
             {row.map((cell, cellIndex) => (
-              <div key={cellIndex} className={`cell ${cell}`}></div>
+              <div className={`cell ${cell}`}></div>
             ))}
           </div>
         ))}
