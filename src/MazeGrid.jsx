@@ -13,7 +13,7 @@ export default function MazeGrid() {
   const [width, setWidth] = useState(initialMaze[0].length);
   const [height, setHeight] = useState(initialMaze.length);
   const [maze, setMaze] = useState(initialMaze);
-  const [timeoutIds, setTimeoutIds] = useState([])
+  const [timeoutIds, setTimeoutIds] = useState([]);
 
   function bfs(startNode) {
     let queue = [startNode];
@@ -32,7 +32,6 @@ export default function MazeGrid() {
           })
         )
       );
-
 
       if (maze[y][x] === "end") {
         console.log("path found!");
@@ -76,9 +75,9 @@ export default function MazeGrid() {
           }
         }
       }
-      
-      const timeout = setTimeout(step, 100);
-      
+
+      const timeoutId = setTimeout(step, 100);
+      setTimeoutIds((previousTimeoutIds) => [...previousTimeoutIds, timeoutId]);
     }
 
     step();
@@ -207,14 +206,16 @@ export default function MazeGrid() {
     setMaze(matrix);
   }
 
-function refreshMaze(){
-  generateMaze(10, 10)
-}
+  function refreshMaze() {
+    timeoutIds.forEach(clearTimeout);
+    setTimeoutIds([]);
+    generateMaze(10, 10);
+  }
 
   return (
     <div className="maze-grid">
       <div className="controls">
-        <button className={"maze-button"} onClick={() => refreshMaze}>
+        <button className={"maze-button"} onClick={() => refreshMaze()}>
           Refresh Maze
         </button>
         <button className={"maze-button"} onClick={() => bfs([1, 0])}>
