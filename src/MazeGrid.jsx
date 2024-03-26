@@ -9,6 +9,41 @@ export default function MazeGrid() {
     ["wall", "wall", "path", "end"],
     ["wall", "wall", "wall", "wall"],
   ];
+
+  function bfs(startNode) {
+    let queue = [startNode];
+    let visited = new Set(`${start[0]}, ${start[1]}`)
+
+    function visitCell([x,v]){
+      console.log(x,v)
+    }
+
+    
+    function step(){
+      if(queue === 0){
+        return
+      }
+      const [x,y] = queue.shift();
+      console.log('new step');
+      const dirs = [  //[horizontal direction, vertical direction]
+      [0, 1],
+      [1, 0],
+      [0, -1],
+      [-1, 0],
+    ];
+    
+    for( const [dx, dy] of dirs){
+      const nx = x + dx;
+      const ny  = y + dy;
+      if(nx >= 0 && nx < width && ny >= 0 && ny >= height && !visited.has(`${nx}, ${ny}`)){
+        visited.add(`${nx}, ${ny}`)
+      }
+    }
+
+    }
+
+    step()
+  }
   
   const [maze, setMaze] = useState(initialMaze);
 

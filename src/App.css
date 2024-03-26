@@ -20,9 +20,9 @@ main {
   background: rgb(10, 1, 80);
   background: linear-gradient(
     90deg,
-    rgba(10, 1, 80, 1) 0%,
+    rgb(2, 79, 180) 0%,
     rgba(51, 29, 253, 1) 50%,
-    rgba(179, 69, 252, 1) 100%
+    rgb(231, 69, 252) 100%
   );
 }
 
