@@ -10,7 +10,7 @@ export default function MazeGrid() {
     ["wall", "wall", "wall", "wall"],
   ];
   
-  const [maze, setMaze] = useState([initialMaze]);
+  const [maze, setMaze] = useState(initialMaze);
 
   //first a function to define the height and width
   function generateMaze(height, width) {
@@ -26,8 +26,6 @@ export default function MazeGrid() {
     }
     console.log(matrix);
 
-    matrix[1][0] = "start"; //matrix[y][x]
-    matrix[height - 2][width - 1] = "end";
 
     //the carving function
     
@@ -38,9 +36,34 @@ export default function MazeGrid() {
           [-1, 0],
         ];
 
+        function isCellValid(x,y){
+          return y >= 0 && x >= 0 && x < width && y < height && matrix[y][x] === "wall" //safely move
+        }
+
       function carvePath(x,y){
-        
+        matrix[y][x] = "path"
+
+        const directions = dirs.sort(() => Math.random() - 0.5);
+        console.log(directions);
+
+        for(let [dx, dy] of directions){
+          const nx = x + dx * 2;
+          const ny = y + dy * 2;
+
+          if(isCellValid(nx, ny)){
+            matrix[y + dy][x + dx] = "path";
+            carvePath(nx, ny)
+          }
+        }
+
+
       }
+
+      carvePath(1,1);
+
+      matrix[1][0] = "start"; //matrix[y][x]
+      matrix[height - 2][width - 1] = "end";
+  
 
     setMaze(matrix);
   }
