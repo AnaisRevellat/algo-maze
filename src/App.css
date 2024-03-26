@@ -4,8 +4,7 @@
   margin-bottom: 2rem;
   background: rgba(90, 31, 150, 0.342);
   border-radius: 5px;
-  width: 30%;
- 
+  width: 30%; 
 }
 
 
@@ -55,8 +54,8 @@
 }
 
 .cell {
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   border: 1px solid #e9d7fe;
 }
 
@@ -65,7 +64,7 @@
 }
 
 .cell.visited {
-  background-color: #0af392;
+  background-color: #ff8800;
 }
 
 .cell.path {
