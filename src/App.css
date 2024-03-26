@@ -35,6 +35,7 @@ main {
 
 .controls {
   display: flex;
+  justify-content: center;
   margin-bottom: 2rem;
   width: 50vw;
   background: rgba(6, 52, 137, 0.498);

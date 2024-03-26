@@ -12,27 +12,25 @@ export default function MazeGrid() {
 
   const [width, setWidth] = useState(initialMaze[0].length);
   const [height, setHeight] = useState(initialMaze.length);
-
   const [maze, setMaze] = useState(initialMaze);
 
   function bfs(startNode) {
     let queue = [startNode];
-    let visited = new Set(`${startNode[0]}, ${startNode[1]}`);
+    let visited = new Set(`${startNode[0]},${startNode[1]}`);
 
     function visitCell([x, y]) {
-      console.log("x and y",x,y);
+      console.log(x, y);
 
-      setMaze((prevMaze) => {
-        prevMaze.map((row, rowIndex) => {
+      setMaze((prevMaze) =>
+        prevMaze.map((row, rowIndex) =>
           row.map((cell, cellIndex) => {
-            if(rowIndex === y && cellIndex === x){
-              return "visited"
+            if (rowIndex === y && cellIndex === x) {
+              return cell === "end" ? "end" : "visited";
             }
-            return cell === "end" ? "end" : "visited";
+            return cell;
           })
-        })
-      })
- 
+        )
+      );
 
       if (maze[y][x] === "end") {
         console.log("path found!");
@@ -46,7 +44,7 @@ export default function MazeGrid() {
         return;
       }
       const [x, y] = queue.shift();
-      console.log("new step");
+      console.log("new step queue");
       const dirs = [
         //[horizontal direction, vertical direction]
         [0, 1],
@@ -63,12 +61,12 @@ export default function MazeGrid() {
           nx >= 0 &&
           nx < width &&
           ny >= 0 &&
-          ny >= height &&
+          ny < height &&
           !visited.has(`${nx}, ${ny}`)
         ) {
           visited.add(`${nx}, ${ny}`);
           console.log(x, y);
-          if (maze[nx][ny] === "path" || maze[nx][ny] === "end") {
+          if (maze[ny][nx] === "path" || maze[ny][nx] === "end") {
             if (visitCell([nx, ny])) {
               return true;
             }
@@ -91,6 +89,16 @@ export default function MazeGrid() {
 
     function visitCell([x, y]) {
       //console.log(x,y)
+      setMaze((prevMaze) =>
+        prevMaze.map((row, rowIndex) =>
+          row.map((cell, cellIndex) => {
+            if (rowIndex === y && cellIndex === x) {
+              return cell === "end" ? "end" : "visited";
+            }
+            return cell;
+          })
+        )
+      );
 
       if (maze[y][x] === "end") {
         console.log("path found!");
@@ -192,7 +200,6 @@ export default function MazeGrid() {
 
     setHeight(matrix.length);
     setWidth(matrix[0].length);
-
     setMaze(matrix);
   }
   return (
