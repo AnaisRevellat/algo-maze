@@ -15,7 +15,11 @@ export default function MazeGrid() {
     let visited = new Set(`${start[0]}, ${start[1]}`)
 
     function visitCell([x,v]){
-      console.log(x,v)
+      if(mze[y][x] === "end"){
+      console.log("path found!")
+      return true
+      }
+      return false
     }
 
     
@@ -37,12 +41,19 @@ export default function MazeGrid() {
       const ny  = y + dy;
       if(nx >= 0 && nx < width && ny >= 0 && ny >= height && !visited.has(`${nx}, ${ny}`)){
         visited.add(`${nx}, ${ny}`)
+        if(maze[nx][ny] === "path" || maze[nx][ny] === "end"){
+          if(visitCell(start)){
+            true
+          }
+          queue.push([nx][ny])
+        }
       }
     }
 
     }
 
     step()
+    return false
   }
   
   const [maze, setMaze] = useState(initialMaze);
