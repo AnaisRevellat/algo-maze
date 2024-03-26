@@ -1,11 +1,29 @@
+.controls {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 2rem;
+  background: rgba(90, 31, 150, 0.342);
+  border-radius: 5px;
+  width: 30%;
+ 
+}
+
+
 .maze-button {
   margin: 10px;
   border: none;
-  padding: 10px 20px;
+  padding: 20px 20px;
   border-radius: 5px;
-  background-color: #248eff;
+  background-color: #006cfa;
   color: white;
   cursor: pointer;
+  transition: all 0.3s ease;
+  font-size:1.2rem;
+}
+
+.maze-button:hover {
+  transform: scale(1.16);
+  background-color: #07182b;
 }
 
 .maze-grid {
@@ -30,15 +48,6 @@
   align-items: center;
 }
 
-.controls {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 2rem;
-  width: 50vw;
-  background: rgba(6, 52, 137, 0.498);
-  border-radius: 5px;
-  width:40%;
-}
 
 .row {
   display: flex;
