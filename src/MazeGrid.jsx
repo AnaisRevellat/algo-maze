@@ -20,6 +20,20 @@ export default function MazeGrid() {
     let visited = new Set(`${startNode[0]}, ${startNode[1]}`);
 
     function visitCell([x, y]) {
+      console.log("x and y",x,y);
+
+      setMaze((prevMaze) => {
+        prevMaze.map((row, rowIndex) => {
+          row.map((cell, cellIndex) => {
+            if(rowIndex === y && cellIndex === x){
+              return "visited"
+            }
+            return cell === "end" ? "end" : "visited";
+          })
+        })
+      })
+ 
+
       if (maze[y][x] === "end") {
         console.log("path found!");
         return true;
@@ -53,6 +67,7 @@ export default function MazeGrid() {
           !visited.has(`${nx}, ${ny}`)
         ) {
           visited.add(`${nx}, ${ny}`);
+          console.log(x, y);
           if (maze[nx][ny] === "path" || maze[nx][ny] === "end") {
             if (visitCell([nx, ny])) {
               return true;
@@ -61,6 +76,7 @@ export default function MazeGrid() {
           }
         }
       }
+      step();
     }
 
     step();
@@ -117,6 +133,7 @@ export default function MazeGrid() {
           }
         }
       }
+      step();
     }
 
     step();
