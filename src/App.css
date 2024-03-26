@@ -33,6 +33,14 @@ main {
   align-items: center;
 }
 
+.controls {
+  display: flex;
+  margin-bottom: 2rem;
+  width: 50vw;
+  background: rgba(6, 52, 137, 0.498);
+  border-radius: 5px;
+}
+
 .row {
   display: flex;
   flex-direction: row;
