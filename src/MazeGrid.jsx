@@ -32,6 +32,7 @@ export default function MazeGrid() {
         )
       );
 
+      
       if (maze[y][x] === "end") {
         console.log("path found!");
         return true;
