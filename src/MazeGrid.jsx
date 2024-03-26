@@ -9,8 +9,9 @@ export default function MazeGrid({ width = 18, height = 18 }) {
     generateMaze(width, height);
   }, [height, width]);
 
- //breadth-first search 
+ //breadth-first search algo
   function bfs(startNode) {
+
     let queue = [startNode];
     let visited = new Set(`${startNode[0]},${startNode[1]}`);
 
@@ -76,7 +77,9 @@ export default function MazeGrid({ width = 18, height = 18 }) {
    
   }
 
+  //depth-first search algo
   function dfs(startNode) {
+
     let stack = [startNode];
     let visited = new Set(`${startNode[0]},${startNode[1]}`);
 
@@ -134,7 +137,6 @@ export default function MazeGrid({ width = 18, height = 18 }) {
       const timeoutId = setTimeout(step, 100);
       setTimeoutIds((previousTimeoutIds) => [...previousTimeoutIds, timeoutId]);
     }
-
     step();
     return false;    
   }
